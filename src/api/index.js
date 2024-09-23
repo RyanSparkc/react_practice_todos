@@ -2,7 +2,10 @@ import axios from "axios";
 
 // todolist api
 export const todoBase = axios.create({
-	baseURL: "https://todolist-api.hexschool.io",
+  baseURL: "https://todolist-api.hexschool.io",
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // 註冊
@@ -13,7 +16,7 @@ export const apiUsersSignIn = (data) => todoBase.post("/users/sign_in", data);
 
 // 驗證
 export const apiUsersCheckout = (headers) =>
-	todoBase.get("/users/checkout", headers);
+  todoBase.get("/users/checkout", headers);
 
 // 登出
 export const apiUsersSignOut = () => todoBase.post("/users/sign_out", {});

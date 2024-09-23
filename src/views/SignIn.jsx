@@ -1,15 +1,48 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { apiUsersSignIn } from '../api/index'
+import Swal from 'sweetalert2'
+
+// 新增 Toast 設定
+const Toast = Swal.mixin({ 
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+
 function SignIn() {
   const navigate = useNavigate()
+  const { register, handleSubmit, formState: { errors } } = useForm()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    navigate('/todo')
+  const onSubmit = async (data) => {
+    try {
+      const response = await apiUsersSignIn({
+        email: data.email,
+        password: data.password,
+      })
+      console.log(response)
+      if (response.data.status) {
+        Toast.fire({
+          icon: 'success',
+          title: '登入成功'
+        })
+        navigate('/todo')
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: 'error',
+        title: '登入失敗',
+        text: error.response?.data?.message || '請檢查您的帳號或密碼',
+      })
+    }
   }
 
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  
   return (
     <>
       <div id="loginPage" className="bg-yellow">
@@ -29,7 +62,7 @@ function SignIn() {
             />
           </div>
           <div>
-            <form className="formControls" onSubmit={handleSubmit}>
+            <form className="formControls" onSubmit={handleSubmit(onSubmit)}>
               <h2 className="formControls_txt">最實用的線上代辦事項服務</h2>
               <label className="formControls_label" htmlFor="email">
                 Email
@@ -38,22 +71,21 @@ function SignIn() {
                 className="formControls_input"
                 type="text"
                 id="email"
-                name="email"
+                {...register('email', { required: true })}
                 placeholder="請輸入 email"
-                required
               />
-              <span>此欄位不可留空</span>
+              {errors.email && <span>此欄位不可留空</span>}
               <label className="formControls_label" htmlFor="pwd">
                 密碼
               </label>
               <input
                 className="formControls_input"
                 type="password"
-                name="pwd"
                 id="pwd"
+                {...register('password', { required: true })}
                 placeholder="請輸入密碼"
-                required
               />
+              {errors.password && <span>此欄位不可留空</span>}
               <input
                 className="formControls_btnSubmit"
                 type="submit"
@@ -67,7 +99,7 @@ function SignIn() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default SignIn;
+export default SignIn
