@@ -528,3 +528,26 @@ nav ul a span {
   text-decoration: none;
 }
 /*# sourceMappingURL=all.css.map */
+
+
+.d-flex {
+  display: flex;
+}
+
+.d-block {
+  display: block;
+}
+
+.empty {
+  padding-top: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.empty p {
+  margin-bottom: 16px;
+}
+.empty img {
+  width: 23vw;
+}
+

@@ -1,10 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { apiUsersSignIn } from '../api/index'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2' // {{ edit_1 }}
 
 // 新增 Toast 設定
-const Toast = Swal.mixin({ 
+const Toast = Swal.mixin({ // {{ edit_2 }}
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
@@ -27,15 +27,18 @@ function SignIn() {
         password: data.password,
       })
       console.log(response)
+      const token = response.data.token
+      const exp = response.data.exp
+      document.cookie = `React-Token=${token}; expires=${new Date(exp * 1000).toUTCString()}`
       if (response.data.status) {
-        Toast.fire({
+        Toast.fire({ // {{ edit_3 }}
           icon: 'success',
           title: '登入成功'
         })
         navigate('/todo')
       }
     } catch (error) {
-      Toast.fire({
+      Toast.fire({ // {{ edit_4 }}
         icon: 'error',
         title: '登入失敗',
         text: error.response?.data?.message || '請檢查您的帳號或密碼',

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { apiUsersSignUp } from '../api/index';
 import { NavLink, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; // {{ edit_1 }}
 
 function SignUp() {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ function SignUp() {
       console.log(response);
       if (response.data.status) {
         // 顯示 Toast 成功訊息
-        Toast.fire({
+        Toast.fire({ 
           icon: 'success',
           title: '註冊成功!'
         });
