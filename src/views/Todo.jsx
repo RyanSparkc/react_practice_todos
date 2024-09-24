@@ -126,7 +126,7 @@ function Todo() {
             {todos.length === 0 ? (
               <div className="empty">
                 <p>目前尚無待辦事項</p>
-                <img src="/images/empty.png" alt="目前尚無待辦事項" />
+                <img src="images/empty.png" alt="目前尚無待辦事項" />
               </div>
             ) : (
               <TodoList
